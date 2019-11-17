@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="5">
+
+    <ImageView
+        android:background="@drawable/main_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout7"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout9">
+
+        <Button
+            android:id="@+id/button_sink"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/cusom_tablayout"
+            android:drawableTop="@drawable/sink"
+            android:text="싱크대"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/button_basin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/cusom_tablayout"
+            android:drawableTop="@drawable/basin"
+            android:text="세면대"
+
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/button_bathroom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/cusom_tablayout"
+            android:drawableTop="@drawable/bathroom"
+            android:text="화장실"
+
+            android:textSize="18dp"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout9"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout8">
+
+        <Button
+            android:id="@+id/button_tile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/cusom_tablayout"
+            android:drawableTop="@drawable/tiles"
+
+
+            android:text="타일"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/button_paint"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/cusom_tablayout"
+            android:drawableTop="@drawable/paint1"
+            android:text="페인트"
+
+
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/button_wallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/cusom_tablayout"
+            android:drawableTop="@drawable/wallpaper"
+
+
+            android:text="벽지"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintBottom_toTopOf="@+id/nav_view">
+
+        <Button
+            android:id="@+id/button_shelf"
+            android:layout_width="match_parent"
+            android:layout_height="103dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/cusom_tablayout"
+            android:drawableTop="@drawable/shelf"
+            android:text="벽선반"
+
+
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/button_monitor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/cusom_tablayout"
+            android:drawableTop="@drawable/monitor"
+
+            android:text="모니터 받침대"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/button_doorknob"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/cusom_tablayout"
+            android:drawableTop="@drawable/doornpb"
+
+            android:text="문손잡이"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout >

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    >
+
+    <TextView
+        android:fontFamily="@font/badal"
+        android:id="@+id/repleUser"
+        android:text="댓글이름"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp" />
+
+    <TextView
+        android:lineSpacingExtra="2dp"
+        android:fontFamily="@font/badal"
+        android:text="댓그라으마ㅡㅏㅇ믕마ㅡ아ㅡ밪으ㅏ브압자으ㅏㅂ증브아ㅡㅈㅂ압아브ㅏㅇㅂ즈으바즈압즈압아ㅡㅂ"
+        android:layout_marginTop="4dp"
+        android:textSize="16dp"
+        android:id="@+id/repleComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

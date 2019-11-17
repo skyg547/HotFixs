@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bufsrepair">
+
+    <uses-permission android:name="android.permission.INTERNET " />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
+    <application
+        android:allowBackup="true"
+
+        android:usesCleartextTraffic="true"
+
+        android:icon="@mipmap/ic_launcher_h"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_h_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.hotfix.Cumu.ReviewBoardClick"
+            android:parentActivityName="com.hotfix.Cumu.ReviewList">
+
+
+        </activity>
+        <activity android:name="com.hotfix.Cumu.ReviewList" />
+        <activity android:name="com.hotfix.Cumu.BoardWrite" />
+        <activity android:name="com.hotfix.Login.JoinPage" />
+        <activity android:name="com.hotfix.Login.LoginPage">
+
+
+        </activity>
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="e6q71rnnmd" />
+
+        <activity android:name="com.hotfix.Menual.FullScreenMovieActivity" />
+        <activity android:name="com.hotfix.Start.GuideList" />
+        <activity android:name="com.hotfix.toolguide.ToolExplain" />
+        <activity android:name="com.hotfix.Menual.ManualMainActivity" />
+        <activity android:name="com.hotfix.Menual.ManualTextActivity" />
+        <activity
+            android:name="com.hotfix.Menual.MovieActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name="com.hotfix.toolguide.ToolList" />
+        <activity android:name="com.hotfix.toolmaps.ToolMaps" />
+        <activity android:name="com.hotfix.Start.StartActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+
+        android:id="@+id/navigation_start"
+        android:icon="@drawable/home"
+        android:title="@string/title_start" />
+    <item
+        android:id="@+id/navigation_menual"
+        android:icon="@drawable/tutorial"
+        android:title="@string/title_menual" />
+    <item
+        android:id="@+id/navigation_cumu1"
+        android:icon="@drawable/boarder"
+        android:title="@string/title_cumu1" />
+    <item
+        android:id="@+id/navigation_toolmaps"
+        android:icon="@drawable/map"
+        android:title="@string/title_toolsmap" />
+    <item
+        android:id="@+id/navigation_toolguide"
+        android:icon="@drawable/tool"
+        android:title="@string/title_toolguide" />
+</menu>
