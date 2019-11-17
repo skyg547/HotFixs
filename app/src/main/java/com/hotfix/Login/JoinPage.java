@@ -102,22 +102,11 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                     dialog.show();
                     return;
                 }
-<<<<<<< HEAD
                 //중복을 확인하는 코드
 
                  String sql = "select user_id from uesr_table Where user_id=' + '" + userId;
                  Cursor cursor =  database.rawQuery(sql,null);
-=======
-                //저장을
 
-<<<<<<< HEAD
-                String sql = "select user_id from user_table Where user_id=' + '" + userId;
-=======
-              String sql = "select user_id from uesr_table Where user_id=' + '" + userId;
-                Cursor cursor = database.rawQuery(sql, null);
-
-                Cursor cursor =  database.rawQuery(sql,null);
->>>>>>> a7e0505689175af89b9ac3209d58627dc718814c
                 //
                 if (cursor.getCount() == 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
@@ -136,8 +125,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
 
                 cursor.close();
->>>>>>> fd55aa4bd940c3126d2ea597cb69cb74f622fa9b
-                        
+
          /*      while(arrayList.isEmpty()){
                     int i=0;
                     if(user_id.equals(arrayList.get(i))){
@@ -145,15 +133,10 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                         code = "1";
                     }
 
-<<<<<<< HEAD
+
                 }*/
                 code = "0";
 
-=======
-                }
-*/
-         /*
->>>>>>> fd55aa4bd940c3126d2ea597cb69cb74f622fa9b
                 if (code.equals("1")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
                     dialog = builder.setMessage("이미 존재하는 아이디 입니다.")
@@ -170,14 +153,12 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                     dialog.show();
                     valiCode = 1;
                 }
-<<<<<<< HEAD
-=======
 
           */
 
 
 
->>>>>>> fd55aa4bd940c3126d2ea597cb69cb74f622fa9b
+
             }
         });
 
@@ -213,11 +194,10 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
     public void createTable(String tableName) {
 
         if (database != null) { // 데이터베이스가 오픈이 정상적으로 돼 있으면 실행
-<<<<<<< HEAD
+
             String sql = "create table if not exists "+ tableName + " (user_id text PRIMARY KEY, user_pw text not null, user_name text not null, user_email text not null)";
-=======
-            String sql = "create table if not exists "+ tableName + " (user_id text PRIMARY KEY, password text not null, nickname text not null, email text not null)";
->>>>>>> fd55aa4bd940c3126d2ea597cb69cb74f622fa9b
+
+
             database.execSQL(sql);
         } else { //데이터베이스가 오픈이 안돼있으면 실행
 
