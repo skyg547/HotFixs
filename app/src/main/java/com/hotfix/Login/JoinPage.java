@@ -108,7 +108,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                     dialog.show();
                     return;
                 }
-                //저장을
+                //중복을 확인하는 코드
 
               String sql = "select user_id from uesr_table Where user_id=' + '" + userId;
 
@@ -178,7 +178,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
     public void createTable(String tableName) {
 
         if (database != null) { // 데이터베이스가 오픈이 정상적으로 돼 있으면 실행
-            String sql = "create table if not exists "+ tableName + " (id text PRIMARY KEY, password text not null, nickname text not null, email text not null)";
+            String sql = "create table if not exists "+ tableName + " (user_id text PRIMARY KEY, user_pw text not null, user_name text not null, user_email text not null)";
             database.execSQL(sql);
         } else { //데이터베이스가 오픈이 안돼있으면 실행
 
@@ -194,68 +194,36 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
         final String userEmail = user_email.getText().toString();
 
         if (valiCode == 1) {
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, serverUrl,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.i("응답 : ", response);
-                            try {
-                                JSONObject json = new JSONObject(response);
-                                code = json.getString("code");
 
-                                if (code.equals("1")) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
-                                    dialog = builder.setMessage("회원가입에 성공했습니다.")
-                                            .setPositiveButton("확인", null)
-                                            .create();
-                                    dialog.show();
+            String sql = "insert into user_table(user_id,user_pw,user_nick,user_email) values( "+ userId + userPw+ userName+ userEmail+')';
+            database.execSQL(sql);
+
+            if (code.equals("1")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
+                dialog = builder.setMessage("회원가입에 성공했습니다.")
+                        .setPositiveButton("확인", null)
+                        .create();
+                dialog.show();
 
 
-                                    Intent intent = new Intent(getApplicationContext(), com.hotfix.Login.LoginPage.class);
-                                    startActivity(intent);
-                                    finish();
+                Intent intent = new Intent(getApplicationContext(), com.hotfix.Login.LoginPage.class);
+                startActivity(intent);
+                finish();
 
-                                } else if(code.equals("0")) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
-                                    dialog = builder.setMessage("회원가입에 실패하였습니다.")
-                                            .setNegativeButton("확인", null)
-                                            .create();
-                                    dialog.show();
-                                }
-                            }catch (Exception e) {
-                                e.printStackTrace();
-                            }
+            } else if(code.equals("0")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
+                dialog = builder.setMessage("회원가입에 실패하였습니다.")
+                        .setNegativeButton("확인", null)
+                        .create();
+                dialog.show();
+            }
 
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    })
-
-            {
-                @Override
-                protected Map<String,String> getParams() throws AuthFailureError
-                {
-                    Map<String, String> params = new HashMap<String,String>();
-                    params.put("user_id", userId);
-                    params.put("user_pw",userPw);
-                    params.put("user_name",userName);
-                    params.put("user_email",userEmail);
-
-                    return params;
-                }
-
-            };
-
-            com.hotfix.Login.MySingleton.getInstance(JoinPage.this).addToRequestque(stringRequest);
+            //com.hotfix.Login.MySingleton.getInstance(JoinPage.this).addToRequestque(stringRequest);
 
         }
         else {
             AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
-            dialog = builder.setMessage("아이디 중복체크 필수")
+            dialog = builder.setMessage("아이디 중복체크 확인")
                     .setNegativeButton("확인", null)
                     .create();
             dialog.show();
