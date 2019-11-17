@@ -110,14 +110,9 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
                 //저장을
 
-<<<<<<< HEAD
-                String sql = "select user_id from user_table Where user_id=' + '" + userId;
-=======
-              String sql = "select user_id from uesr_table Where user_id=' + '" + userId;
+                String sql = "select user_id from user_table Where user_id=' + " + userId + "'";
                 Cursor cursor = database.rawQuery(sql, null);
 
-                Cursor cursor =  database.rawQuery(sql,null);
->>>>>>> a7e0505689175af89b9ac3209d58627dc718814c
                 //
                 if (cursor.getCount() == 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
