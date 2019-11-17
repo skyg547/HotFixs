@@ -104,8 +104,13 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
                 //중복을 확인하는 코드
 
+<<<<<<< HEAD
                  String sql = "select user_id from uesr_table Where user_id=' + '" + userId;
                  Cursor cursor =  database.rawQuery(sql,null);
+=======
+                String sql = "select user_id from user_table Where user_id=' + " + userId + "'";
+                Cursor cursor = database.rawQuery(sql, null);
+>>>>>>> 230328d80de6212cdbb12f3ce227d19a66bfc0b9
 
                 //
                 if (cursor.getCount() == 0) {
