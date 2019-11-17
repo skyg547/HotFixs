@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.hotfix.Back.BackPressCloseHandler;
 import com.bufsrepair.R;
+import com.hotfix.MainActivity;
 import com.hotfix.Start.StartActivity;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -37,11 +40,17 @@ import java.util.Map;
 
 public class LoginPage extends AppCompatActivity implements Validator.ValidationListener{
 
+    String code;
+    private int valiCode = 0;
+
     private BackPressCloseHandler backPressCloseHandler;
     SharedPreferences auto;
     @NotEmpty(message = "입력")
     @Length(min = 4, max = 12, message="4~12자로 입력해주세요")
     EditText etId;
+
+    //SQLite 변수 선언
+    SQLiteDatabase database;
 
     @Password
     @NotEmpty(message = "비밀번호를 입력하세요")
@@ -60,7 +69,6 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
         backPressCloseHandler = new BackPressCloseHandler(this);
-
 
 
         ActionBar abar = getSupportActionBar();
@@ -100,7 +108,6 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
         }
 
 
-
         etId = (EditText) findViewById(R.id.etId);
         etPw = (EditText) findViewById(R.id.etPass);
 
@@ -124,10 +131,58 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
                 validator.validate();
 
 
+                //////////////////////////////////////////////////////////////////////
+                // SQLite 코드 부분
+                String databaseName = "database";
+                openDatabase(databaseName);
+                // //
+                /////////////////////////////////////////////////////////////////////////
             }
         });
 
 
+    }
+
+    // 데이터베이스 오픈 코드
+    public void openDatabase(String databaseName) {
+        database = openOrCreateDatabase(databaseName, MODE_PRIVATE, null);
+
+        // id, pw 조회하러 가는 코드
+        if (database != null) {
+            String tableName = "user_table";
+            findDatabase(tableName);
+        }
+    }
+
+    //id, pw 조회하는 코드
+    public void findDatabase(String tableName) {
+
+        String sql = "select user_id, user_pw from user_table Where user_id=' + " + etId + "', user_pw=' + " + etPw + "'";
+        Cursor cursor = database.rawQuery(sql, null);
+
+        if (cursor.getCount() == 1) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
+            dialog = builder.setMessage("로그인 되었습니다.")
+                    .setNegativeButton("확인", null)
+                    .create();
+            dialog.show();
+            valiCode = 1;
+            code = "1";
+
+            Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
+            dialog = builder.setMessage("아이디와 비밀번호를 확인해주세요.")
+                    .setPositiveButton("확인", null)
+                    .create();
+            dialog.show();
+            valiCode = 0;
+            code = "0";
+        }
+
+        cursor.close();
     }
 
 
