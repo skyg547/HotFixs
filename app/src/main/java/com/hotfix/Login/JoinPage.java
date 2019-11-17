@@ -105,7 +105,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 //중복을 확인하는 코드
 
                 String sql = "select user_id from user_table Where user_id=' + " + userId + "'";
-                Cursor cursor =  database.rawQuery(sql,null);
+                Cursor cursor = database.rawQuery(sql, null);
 
 
                 if (cursor.getCount() == 0) {
@@ -127,6 +127,26 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
 
                 cursor.close();
+
+                code = "0";
+
+                if (code.equals("1")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
+                    dialog = builder.setMessage("이미 존재하는 아이디 입니다.")
+                            .setPositiveButton("확인", null)
+                            .create();
+                    dialog.show();
+                    valiCode = 0;
+
+                } else if(code.equals("0")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
+                    dialog = builder.setMessage("사용하셔도 좋은 아이디 입니다.")
+                            .setNegativeButton("확인", null)
+                            .create();
+                    dialog.show();
+                    valiCode = 1;
+                }
+
 
             }
         });
