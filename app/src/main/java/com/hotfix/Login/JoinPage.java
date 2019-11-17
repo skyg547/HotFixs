@@ -2,6 +2,7 @@ package com.hotfix.Login;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +48,8 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
 
     @NotEmpty(message = "필수 입력항목입니다.")
     @Password
+
+
     EditText user_pw;
     @ConfirmPassword
     EditText user_chkpw;
@@ -107,8 +110,9 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
                 //저장을
 
-            //    String sql = "select user_id from Jointable Where userId=' + '" + userId;
-            //    cus=  database.rawQuery();
+              String sql = "select user_id from uesr_table Where user_id=' + '" + userId;
+
+                Cursor cursor =  database.rawQuery(sql,null);
 
                         
          /*       while(arrayList.isEmpty()){
@@ -161,7 +165,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
         // db가 생성이 안됐으면 만들어주고
         if (database != null) {
             // db 생성
-            String tableName = "Jointable";
+            String tableName = "user_table";
             createTable(tableName);
         }
         // 이미 돼 있으면 조회로 진행
