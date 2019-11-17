@@ -48,8 +48,6 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
 
     @NotEmpty(message = "필수 입력항목입니다.")
     @Password
-
-
     EditText user_pw;
     @ConfirmPassword
     EditText user_chkpw;
@@ -61,8 +59,6 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
     @Email(message = "이메일 형식으로 작성하세요")
     EditText user_email;
 
-    final static private String serverUrl = "http://54.180.118.93:8080/comm/JoinProcess.do";
-    final static private String serverUrl2 = "http://54.180.118.93:8080/comm/ValidateUserId.do";
     String code;
     private AlertDialog dialog;
     private int valiCode = 0;
@@ -87,14 +83,12 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
 
         Button valiButton = (Button) findViewById(R.id.valiButton);
 
-
         //////////////////////////////////////////////////////////////////////
         // SQLite 코드 부분
         String databaseName = "database";
         openDatabase(databaseName);
         // //
         /////////////////////////////////////////////////////////////////////////
-
 
         valiButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,20 +104,19 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
                 //중복을 확인하는 코드
 
-              String sql = "select user_id from uesr_table Where user_id=' + '" + userId;
-
-                Cursor cursor =  database.rawQuery(sql,null);
-
+                 String sql = "select user_id from uesr_table Where user_id=' + '" + userId;
+                 Cursor cursor =  database.rawQuery(sql,null);
                         
-         /*       while(arrayList.isEmpty()){
+         /*      while(arrayList.isEmpty()){
                     int i=0;
                     if(user_id.equals(arrayList.get(i))){
 
                         code = "1";
                     }
 
-                }
-*/
+                }*/
+                code = "0";
+
                 if (code.equals("1")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
                     dialog = builder.setMessage("이미 존재하는 아이디 입니다.")
@@ -140,9 +133,6 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                     dialog.show();
                     valiCode = 1;
                 }
-
-
-
             }
         });
 
@@ -206,6 +196,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 dialog.show();
 
 
+                database.close();
                 Intent intent = new Intent(getApplicationContext(), com.hotfix.Login.LoginPage.class);
                 startActivity(intent);
                 finish();
@@ -218,7 +209,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 dialog.show();
             }
 
-            //com.hotfix.Login.MySingleton.getInstance(JoinPage.this).addToRequestque(stringRequest);
+
 
         }
         else {
