@@ -105,12 +105,8 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 //중복을 확인하는 코드
 
                 String sql = "select user_id from user_table Where user_id=' + " + userId + "'";
-<<<<<<< HEAD
                 Cursor cursor = database.rawQuery(sql, null);
-=======
-                Cursor cursor =  database.rawQuery(sql,null);
 
->>>>>>> ad0284b7f27eeee653c3f3cff87eeb55dec8297c
 
                 if (cursor.getCount() == 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
@@ -132,7 +128,6 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
 
                 cursor.close();
 
-<<<<<<< HEAD
                 code = "0";
 
                 if (code.equals("1")) {
@@ -153,12 +148,6 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
 
 
-
-
-
-
-=======
->>>>>>> ad0284b7f27eeee653c3f3cff87eeb55dec8297c
             }
         });
 
