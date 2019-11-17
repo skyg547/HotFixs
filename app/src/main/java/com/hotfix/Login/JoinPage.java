@@ -107,7 +107,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
                 //저장을
 
-            //    String sql = "select user_id from Jointable Where userId=' + '" + userId;
+                String sql = "select user_id from user_table Where user_id=' + '" + userId;
             //    cus=  database.rawQuery();
 
                         
@@ -174,7 +174,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
     public void createTable(String tableName) {
 
         if (database != null) { // 데이터베이스가 오픈이 정상적으로 돼 있으면 실행
-            String sql = "create table if not exists "+ tableName + " (id text PRIMARY KEY, password text not null, nickname text not null, email text not null)";
+            String sql = "create table if not exists "+ tableName + " (user_id text PRIMARY KEY, password text not null, nickname text not null, email text not null)";
             database.execSQL(sql);
         } else { //데이터베이스가 오픈이 안돼있으면 실행
 
