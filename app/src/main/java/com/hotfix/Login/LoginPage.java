@@ -136,74 +136,40 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
         final String userId = etId.getText().toString();
         final String userPw = etPw.getText().toString();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, serverUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("tiger", response);
-                        try {
-                            JSONObject json = new JSONObject(response);
-                            String code = json.getString("code");
+        String code = "1";
 
-                            if (code.equals("1")) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
-                                dialog = builder.setMessage("로그인 하였습니다.")
-                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                Intent intent = new Intent(getApplicationContext(), StartActivity.class);
-                                                startActivity(intent);
-                                                finish();
-                                            }
-                                        })
-                                        .create();
-                                dialog.show();
-
-                                // 기기에 사용자 정보(아이디, 비밀번호)를 등록함.
-                             //   PropertyManager.getInstance().setUserId(userId);
-                               // PropertyManager.getInstance().setUserPw(userPw);
-
-                                SharedPreferences.Editor autoLogin = auto.edit();
-                                autoLogin.putString("user_id", userId);
-                                autoLogin.putString("user_pw", userPw);
-                                //꼭 commit()을 해줘야 값이 저장됩니다 ㅎㅎ
-                                //
-                                autoLogin.commit();
-
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
-                                dialog = builder.setMessage("아이디와 비밀번호를 확인하세요")
-                                        .setPositiveButton("확인", null)
-                                        .create();
-                                dialog.show();
-                            }
-                        }catch (Exception e) {
-                            e.printStackTrace();
+        if (code.equals("1")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
+            dialog = builder.setMessage("로그인 하였습니다.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
+                    })
+                                        .create();
+            dialog.show();
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+           // 기기에 사용자 정보(아이디, 비밀번호)를 등록함.
+            //   PropertyManager.getInstance().setUserId(userId);
+            // PropertyManager.getInstance().setUserPw(userPw);
 
-                                Toast.makeText(getApplicationContext(), "현재 서버가 혼잡하오니 나중에 다시 시도해주시기 바랍니다",Toast.LENGTH_LONG).show();
+            SharedPreferences.Editor autoLogin = auto.edit();
+            autoLogin.putString("user_id", userId);
+            autoLogin.putString("user_pw", userPw);
+            //꼭 commit()을 해줘야 값이 저장됩니다 ㅎㅎ
+            //
+            autoLogin.commit();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
+            dialog = builder.setMessage("아이디와 비밀번호를 확인하세요")
+                    .setPositiveButton("확인", null)
+                    .create();
+            dialog.show();
+        }
 
-
-                    }
-                })
-        {
-            @Override
-            protected Map<String,String> getParams()
-            {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("user_id", userId);
-                params.put("user_pw", userPw);
-
-                return params;
-            }
-        };
-        com.hotfix.Login.MySingleton.getInstance(LoginPage.this).addToRequestque(stringRequest);
     }
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
