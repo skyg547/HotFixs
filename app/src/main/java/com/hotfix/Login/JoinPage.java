@@ -14,12 +14,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
-import com.android.volley.toolbox.StringRequest;
 import com.bufsrepair.R;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -104,8 +98,9 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
                 //중복을 확인하는 코드
 
-                String sql = "select user_id from user_table Where user_id=' + " + userId + "'";
+                String sql = "select user_id from user_table Where user_id='" + userId + "'";
                 Cursor cursor = database.rawQuery(sql, null);
+
 
                 if (cursor.getCount() == 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
@@ -126,6 +121,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
                 }
 
                 cursor.close();
+
             }
         });
 
@@ -153,7 +149,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
         }
         // 이미 돼 있으면 조회로 진행
         else {
-             // 바로 조회
+            // 바로 조회
         }
     }
 
@@ -181,7 +177,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
 
         if (valiCode == 1) {
 
-            String sql = "insert into user_table(user_id,user_pw,user_nick,user_email) values( "+ userId + userPw+ userName+ userEmail+')';
+            String sql = "insert into user_table(user_id,user_pw,user_name,user_email) values (" + userId + " " userPw+ userName+ userEmail+ ")";
             database.execSQL(sql);
 
             if (code.equals("1")) {
@@ -193,7 +189,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
 
 
                 database.close();
-                Intent intent = new Intent(getApplicationContext(), com.hotfix.Login.LoginPage.class);
+                Intent intent = new Intent(getApplicationContext(), LoginPage.class);
                 startActivity(intent);
                 finish();
 
