@@ -157,7 +157,7 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
     //id, pw 조회하는 코드
     public void findDatabase(String tableName) {
 
-        String sql = "select user_id, user_pw from user_table Where user_id=' + " + etId + "', user_pw=' + " + etPw + "'";
+        String sql = "select user_id, user_pw from user_table Where user_id='" + etId + "', user_pw='" + etPw + "'";
         Cursor cursor = database.rawQuery(sql, null);
 
         if (cursor.getCount() == 1) {
