@@ -87,7 +87,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
         valiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String userId = user_id.getText().toString();
+                String userId = user_id.getText().toString();
                 if(userId.equals("")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
                     dialog = builder.setMessage("아이디를 입력해주세요.")
@@ -141,7 +141,7 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
     public void openDatabase(String databaseName) {
         database = openOrCreateDatabase(databaseName, MODE_PRIVATE, null);
 
-        // db가 생성이 안됐으면 만들어주고
+        // db가 정상 오픈 됐으면 테이블 만들기
         if (database != null) {
             // db 생성
             String tableName = "user_table";
@@ -156,29 +156,33 @@ public class JoinPage extends AppCompatActivity implements Validator.ValidationL
     // 테이블 생성 코드
     public void createTable(String tableName) {
 
+
         if (database != null) { // 데이터베이스가 오픈이 정상적으로 돼 있으면 실행
 
-            String sql = "create table if not exists "+ tableName + " (user_id text PRIMARY KEY, user_pw text not null, user_name text not null, user_email text not null)";
+                String sql = "create table if not exists "+ tableName + "(user_id text PRIMARY KEY, user_pw text not null, user_name text not null, user_email text not null)";
 
 
-            database.execSQL(sql);
+                database.execSQL(sql);
         } else { //데이터베이스가 오픈이 안돼있으면 실행
 
         }
+
+
     }
 
 
     @Override
     public void onValidationSucceeded() {
-        final String userId = user_id.getText().toString();
-        final String userPw = user_pw.getText().toString();
-        final String userName = user_nick.getText().toString();
-        final String userEmail = user_email.getText().toString();
+        String userId = user_id.getText().toString().trim();
+        String userPw = user_pw.getText().toString().trim();
+        String userName = user_nick.getText().toString().trim();
+        String userEmail = user_email.getText().toString().trim();
 
         if (valiCode == 1) {
 
-            String sql = "insert into user_table(user_id,user_pw,user_name,user_email) values (" + userId + " " userPw+ userName+ userEmail+ ")";
-            database.execSQL(sql);
+            String sql = "insert into user_table(user_id, user_pw, user_name, user_email) values(?, ?, ?, ?)";
+            String[] params ={userId, userPw, userName, userEmail};
+            database.execSQL(sql, params);
 
             if (code.equals("1")) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(JoinPage.this);
