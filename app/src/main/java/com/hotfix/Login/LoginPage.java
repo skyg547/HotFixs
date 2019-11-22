@@ -75,14 +75,16 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
         abar.hide();
 
 
-    /*    if(loginId !=null && loginPwd != null) {
+        /*
+        if(loginId !=null && loginPwd != null) {
 
                 Toast.makeText(getApplicationContext(), loginId +"님 자동로그인 입니다.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), StartActivity.class);
                 startActivity(intent);
                 finish();
 
-        }*/
+        }
+         */
 
 
 
@@ -107,7 +109,6 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
 
         }
 
-
         etId = (EditText) findViewById(R.id.etId);
         etPw = (EditText) findViewById(R.id.etPass);
 
@@ -128,15 +129,8 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 validator.validate();
-
-
-                //////////////////////////////////////////////////////////////////////
-                // SQLite 코드 부분
-                String databaseName = "database";
-                openDatabase(databaseName);
-                // //
-                /////////////////////////////////////////////////////////////////////////
             }
         });
 
@@ -146,21 +140,18 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
     // 데이터베이스 오픈 코드
     public void openDatabase(String databaseName) {
         database = openOrCreateDatabase(databaseName, MODE_PRIVATE, null);
-
-        // id, pw 조회하러 가는 코드
-        if (database != null) {
-            String tableName = "user_table";
-            findDatabase(tableName);
-        }
     }
 
     //id, pw 조회하는 코드
-    public void findDatabase(String tableName) {
+    public void findDatabase(String user_id, String user_pw) {
 
-        String sql = "select user_id, user_pw from user_table Where user_id='" + etId + "', user_pw='" + etPw + "'";
-        Cursor cursor = database.rawQuery(sql, null);
+        String sql = "select user_id, user_pw from user_table where user_id = ? and user_pw = ?";
+        String[] params = {user_id, user_pw};
+        Cursor cursor = database.rawQuery(sql, params);
 
         if (cursor.getCount() == 1) {
+            code = "1";
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
             dialog = builder.setMessage("로그인 되었습니다.")
                     .setNegativeButton("확인", null)
@@ -172,13 +163,17 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
             Intent intent = new Intent(getApplicationContext(), StartActivity.class);
             startActivity(intent);
             finish();
+
+             */
         } else {
+            /*
             AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
             dialog = builder.setMessage("아이디와 비밀번호를 확인해주세요.")
                     .setPositiveButton("확인", null)
                     .create();
             dialog.show();
             valiCode = 0;
+             */
             code = "0";
         }
 
@@ -188,10 +183,19 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
 
     @Override
     public void onValidationSucceeded() {
+        //////////////////////////////////////////////////////////////////////
+        // SQLite 코드 부분
+        String databaseName = "database";
+        openDatabase(databaseName);
+        // //
+        /////////////////////////////////////////////////////////////////////////
         final String userId = etId.getText().toString();
         final String userPw = etPw.getText().toString();
 
-        String code = "1";
+        if (database != null) {
+            
+            findDatabase(userId, userPw);
+        }
 
         if (code.equals("1")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(LoginPage.this);
