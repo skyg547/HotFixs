@@ -193,7 +193,7 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
         final String userPw = etPw.getText().toString();
 
         if (database != null) {
-            
+
             findDatabase(userId, userPw);
         }
 
