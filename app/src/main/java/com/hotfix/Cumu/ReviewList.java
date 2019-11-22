@@ -142,7 +142,7 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
                             //        ListView , Adapter 생성 및 연결
 
 
-                            com.hotfix.Cumu.ReviewAdapter reviewAdapter = new com.hotfix.Cumu.ReviewAdapter();
+                            ReviewAdapter reviewAdapter = new ReviewAdapter();
 
                           //  reviewAdapter.addItem(oData);
 
@@ -169,7 +169,7 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), com.hotfix.Cumu.ReviewBoardClick.class);
+                Intent intent = new Intent(getApplicationContext(), ReviewBoardClick.class);
 
                 intent.putExtra("seq", oData.get(i).getSeq());
                 intent.putExtra("userId", oData.get(i).getReviewUserId());
