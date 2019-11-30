@@ -3,12 +3,17 @@ package com.hotfix.Cumu;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +30,8 @@ import com.hotfix.Login.MySingleton;
 import com.hotfix.Menual.ManualMainActivity;
 import com.bufsrepair.R;
 import com.hotfix.Start.StartActivity;
+import com.hotfix.toolguide.ToolItem;
+import com.hotfix.toolguide.ToolItemView;
 import com.hotfix.toolguide.ToolList;
 import com.hotfix.toolmaps.ToolMaps;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,14 +41,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
 public class ReviewList extends AppCompatActivity implements View.OnClickListener {
+    ReviewAdapter adapter;
+    SQLiteDatabase database;
+    Cursor cursor;
+    String title;
+    String content;
+
     private BackPressCloseHandler backPressCloseHandler;
 
-    private JSONObject data;
     private ListView listView = null;
     Intent intent;
-    private String serverUrl = "http://54.180.118.93:8080/comm/ReviewListGet.bo";
-    ArrayList<ReviewDTO> oData = new ArrayList<ReviewDTO>();
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.boardwirte_menu, menu);
@@ -55,13 +67,13 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
         switch (curId) {
             case R.id.menu_write:
 
-
-                intent = new Intent(getApplicationContext(), com.hotfix.Cumu.BoardWrite.class);
+                intent = new Intent(getApplicationContext(), BoardWrite.class);
                 startActivity(intent);
 
                 break;
 
-            default:break;
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -70,37 +82,213 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) { switch (item.getItemId()) {
-            case R.id.navigation_start:
-                intent = new Intent(getApplicationContext(), StartActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
-            case R.id.navigation_menual:
-                intent = new Intent(getApplicationContext(), ManualMainActivity.class);
-                intent.putExtra("name", "집수리 매뉴얼");
-                finish();
-                startActivity(intent);
-                return true;
-            case R.id.navigation_cumu1:
-                return true;
-            case R.id.navigation_toolmaps:
-                intent = new Intent(getApplicationContext(), ToolMaps.class);
-                startActivity(intent);
-                finish();
-                return true;
-            case R.id.navigation_toolguide:
-                intent = new Intent(getApplicationContext(), ToolList.class);
-                startActivity(intent);
-                finish();
-                return true;
-        }
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_start:
+                    intent = new Intent(getApplicationContext(), StartActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                case R.id.navigation_menual:
+                    intent = new Intent(getApplicationContext(), ManualMainActivity.class);
+                    intent.putExtra("name", "집수리 매뉴얼");
+                    finish();
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_cumu1:
+                    return true;
+                case R.id.navigation_toolmaps:
+                    intent = new Intent(getApplicationContext(), ToolMaps.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                case R.id.navigation_toolguide:
+                    intent = new Intent(getApplicationContext(), ToolList.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
+            }
             return false;
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_review_list);
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
+
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navigation_cumu1);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        listView = (ListView) findViewById(R.id.listView);
+
+
+
+
+        database = openOrCreateDatabase("database", MODE_PRIVATE, null);
+        if (database != null) {
+            // db 생성
+            String tableName = "review_board";
+
+
+            String sql = "create table if not exists "+ tableName + "(_id integer PRIMARY KEY autoincrement, review_name text not null, review_title text not null, review_content text not null)";
+            database.execSQL(sql);
+
+
+            sql = "select review_title, review_content from review_board";
+            cursor = database.rawQuery(sql, null);
+
+            adapter = new ReviewAdapter();
+
+            for(int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+                title = cursor.getString(0);
+                content = cursor.getString(1);
+                adapter.addItem(new ReviewItem(title, content));
+            }
+            cursor.close();
+        }
+
+
+
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ReviewItem item = (ReviewItem) adapter.getItem(position);
+                Toast.makeText(getApplicationContext(), "선택 : " + item.getTitle(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    class ReviewAdapter extends BaseAdapter {
+        ArrayList<ReviewItem> items = new ArrayList<ReviewItem>();
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        public void addItem(ReviewItem item) {
+            items.add(item);
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ReviewItemView view = new ReviewItemView(getApplicationContext());
+
+            ReviewItem item = items.get(position);
+            view.setTitle(item.getTitle());
+            view.setContent(item.getContent());
+
+            return view;
+        }
+    }
+
+
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
+    }
+}
+
+
+
+
+
+//////////////////////////////////////
+/* 종완이형 코드
+public class ReviewList extends AppCompatActivity implements View.OnClickListener {
+    private BackPressCloseHandler backPressCloseHandler;
+
+
+    private JSONObject data;
+    private ListView listView = null;
+    Intent intent;
+    private String serverUrl = "http://54.180.118.93:8080/comm/ReviewListGet.bo";
+    ArrayList<ReviewDTO> oData = new ArrayList<ReviewDTO>();
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.boardwirte_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int curId = item.getItemId();
+        switch (curId) {
+            case R.id.menu_write:
+
+                intent = new Intent(getApplicationContext(), BoardWrite.class);
+                startActivity(intent);
+
+                break;
+
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_start:
+                    intent = new Intent(getApplicationContext(), StartActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                case R.id.navigation_menual:
+                    intent = new Intent(getApplicationContext(), ManualMainActivity.class);
+                    intent.putExtra("name", "집수리 매뉴얼");
+                    finish();
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_cumu1:
+                    return true;
+                case R.id.navigation_toolmaps:
+                    intent = new Intent(getApplicationContext(), ToolMaps.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                case R.id.navigation_toolguide:
+                    intent = new Intent(getApplicationContext(), ToolList.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_list);
 
@@ -182,7 +370,10 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
                 startActivity(intent);
             }
         });
+
     }
+
+
 
     @Override
     public void onClick(View view) {
@@ -193,4 +384,7 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
         //super.onBackPressed();
         backPressCloseHandler.onBackPressed();
     }
+
 }
+
+ */
