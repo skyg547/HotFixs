@@ -92,7 +92,7 @@
 
             android:id="@+id/commentData"
             android:layout_marginLeft="8dp"
-            android:text="20"
+            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
