@@ -140,6 +140,7 @@ public class LoginPage extends AppCompatActivity implements Validator.Validation
     // 데이터베이스 오픈 코드
     public void openDatabase(String databaseName) {
         database = openOrCreateDatabase(databaseName, MODE_PRIVATE, null);
+
     }
 
     //id, pw 조회하는 코드
