@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
     public class RepleAdapter extends BaseAdapter {
 
-        private ArrayList<com.hotfix.Cumu.RepleDTO> repleDTOS = null;
+        private ArrayList<RepleDTO> repleDTOS = null;
 
         @Override
         public int getCount() {
@@ -21,7 +21,7 @@ import java.util.ArrayList;
         }
 
         @Override
-        public com.hotfix.Cumu.RepleDTO getItem(int i) {
+        public RepleDTO getItem(int i) {
             return repleDTOS.get(i);
         }
 
@@ -44,7 +44,7 @@ import java.util.ArrayList;
             TextView textUser = (TextView) view.findViewById(R.id.repleUser);
             TextView textComment = (TextView) view.findViewById(R.id.repleComment);
 
-            com.hotfix.Cumu.RepleDTO repleDTO = getItem(i);
+            RepleDTO repleDTO = getItem(i);
 
             textUser.setText(repleDTO.getUserid());
             textComment.setText(repleDTO.getComment());
@@ -52,11 +52,11 @@ import java.util.ArrayList;
             return view;
         }
 
-        public void addItem(ArrayList<com.hotfix.Cumu.RepleDTO> oData) {
+        public void addItem(ArrayList<RepleDTO> oData) {
             repleDTOS = new ArrayList<>();
 
             for (int i = 0; i<oData.size(); i++) {
-                com.hotfix.Cumu.RepleDTO repleDTO = new com.hotfix.Cumu.RepleDTO();
+                RepleDTO repleDTO = new com.hotfix.Cumu.RepleDTO();
 
                 repleDTO.setNumber(oData.get(i).getNumber());
                 repleDTO.setSeq(oData.get(i).getSeq());
