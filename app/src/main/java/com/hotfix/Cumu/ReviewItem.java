@@ -6,7 +6,7 @@ public class ReviewItem {
     String name;
     int review_number;
 
-    public ReviewItem(int review_number, String title, String content, String name) {
+    public ReviewItem(int review_number, String name, String title, String content) {
         this.review_number = review_number;
         this.title = title;
         this.content = content;
