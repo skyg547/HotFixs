@@ -2,7 +2,10 @@ package com.hotfix.Cumu;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +37,105 @@ import java.util.Map;
  * 4. ServerURL = http://172.22.201.235:8080/comm/ReviewBoardWrite.do
  *
  * */
+
+
+
+///////////////////////
+//관우코드
+public class BoardWrite extends AppCompatActivity {
+    SQLiteDatabase database;
+    Cursor cursor;
+    String userName;
+
+    EditText subject;
+    EditText content;
+    private AlertDialog dialog;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_board_write);
+
+
+        subject = (EditText) findViewById(R.id.subject);
+        content = (EditText) findViewById(R.id.content);
+
+        Button writeBtn = (Button) findViewById(R.id.writeBtn);
+
+        writeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String subjectData = subject.getText().toString();
+                final String contentData = content.getText().toString();
+
+                if (subjectData.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BoardWrite.this);
+                    dialog = builder.setMessage("제목을 입력하세요.")
+                            .setPositiveButton("확인", null)
+                            .create();
+                    dialog.show();
+                    return;
+                }
+                if (contentData.equals("")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BoardWrite.this);
+                    dialog = builder.setMessage("내용을 입력하세요.")
+                            .setPositiveButton("확인", null)
+                            .create();
+                    dialog.show();
+                    return;
+                }
+
+                if (database == null) database = openOrCreateDatabase("database", MODE_PRIVATE, null);
+
+                SharedPreferences auto = getSharedPreferences("key", Activity.MODE_PRIVATE);
+                String loginId = auto.getString("user_id","");
+
+                String sql = "select user_name from user_table where user_id = ?";
+                String[] params = { loginId };
+                cursor = database.rawQuery(sql, params);
+                cursor.moveToNext();
+                userName = cursor.getString(0);
+                cursor.close();
+
+
+                sql = "insert into review_board(review_name, review_title, review_content) values(?, ?, ?)";
+                String[] params2 = {userName, subjectData, contentData};
+                database.execSQL(sql, params2);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BoardWrite.this);
+                dialog = builder.setMessage("글을 등록하였습니다.")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(getApplicationContext(), ReviewList.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .create();
+                dialog.show();
+
+            }
+        });
+    }
+}
+
+
+
+
+///////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+//////////////////////////////////////
+//여기서부터 싹 다 종완이형 코드
+
+
+/*
 public class BoardWrite extends AppCompatActivity {
 
     EditText subject;
@@ -116,7 +218,9 @@ public class BoardWrite extends AppCompatActivity {
                         /*
                          * 제목, 내용, 유저아이디
                          * subject,content,userId
-                         * */
+                         *
+                         */
+/*
                         SharedPreferences auto = getSharedPreferences("key", Activity.MODE_PRIVATE);
                         String loginId = auto.getString("user_id","");
                         params.put("user_id", loginId);
@@ -131,3 +235,4 @@ public class BoardWrite extends AppCompatActivity {
         });
     }
 }
+*/
