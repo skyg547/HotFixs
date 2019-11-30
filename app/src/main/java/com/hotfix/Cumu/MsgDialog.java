@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +29,62 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
+
+
+///////////////////////////////////////////////
+//관우 코드
+
+
+public class MsgDialog extends AppCompatDialogFragment {
+    SQLiteDatabase database;
+    Cursor cursor;
+
+    private AlertDialog dialog;
+
+    private EditText msg;
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View view = inflater.inflate(R.layout.layout_dialog,null);
+
+        msg = view.findViewById(R.id.edit_msg);
+
+        String content = msg.getText().toString();
+
+
+        String sql = "insert into comment_table(comment_name, comment_content) values(?, ?)";
+                // "create table if not exists comment_table(_id integer PRIMARY KEY autoincrement, comment_name text not null, comment_content text not null)";
+        database.execSQL(sql);
+
+        return builder.create();
+    }
+}
+
+
+
+
+
+
+
+
+//////////////////////////////////////
+
+
+
+
+
+
+
+
+///////////////////////////////
+// 종완이형 코드
+
+/*
 
 public class MsgDialog extends AppCompatDialogFragment {
     public String seq;
@@ -124,4 +183,4 @@ public class MsgDialog extends AppCompatDialogFragment {
                 });
         return builder.create();
     }
-}
+}*/
