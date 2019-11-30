@@ -48,6 +48,8 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
     Cursor cursor;
     String title;
     String content;
+    String name;
+    int review_number;
 
     private BackPressCloseHandler backPressCloseHandler;
 
@@ -134,21 +136,29 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
             // db 생성
             String tableName = "review_board";
 
-
+            // 게시판 테이블
             String sql = "create table if not exists "+ tableName + "(_id integer PRIMARY KEY autoincrement, review_name text not null, review_title text not null, review_content text not null)";
             database.execSQL(sql);
 
+            //댓글 테이블
+            sql = "create table if not exists comment_table(_id integer PRIMARY KEY autoincrement, comment_name text not null, comment_content text not null)";
+            database.execSQL(sql);
 
-            sql = "select review_title, review_content from review_board";
+
+
+
+            sql = "select * from review_board";
             cursor = database.rawQuery(sql, null);
 
             adapter = new ReviewAdapter();
 
             for(int i = 0; i < cursor.getCount(); i++) {
                 cursor.moveToNext();
-                title = cursor.getString(0);
-                content = cursor.getString(1);
-                adapter.addItem(new ReviewItem(title, content));
+                review_number = cursor.getInt(0);
+                name = cursor.getString(1);
+                title = cursor.getString(2);
+                content = cursor.getString(3);
+                adapter.addItem(new ReviewItem(review_number, title, content, name));
             }
             cursor.close();
         }
@@ -161,7 +171,14 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ReviewItem item = (ReviewItem) adapter.getItem(position);
-                Toast.makeText(getApplicationContext(), "선택 : " + item.getTitle(), Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(getApplicationContext(), ReviewBoardClick.class);
+                intent.putExtra("name", item.getName());
+                intent.putExtra("title", item.getTitle());
+                intent.putExtra("content", item.getContent());
+                intent.putExtra("review_number", item.getReview_number());
+
+                startActivity(intent);
             }
         });
     }
