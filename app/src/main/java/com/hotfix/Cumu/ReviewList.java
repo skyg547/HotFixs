@@ -158,7 +158,7 @@ public class ReviewList extends AppCompatActivity implements View.OnClickListene
                 name = cursor.getString(1);
                 title = cursor.getString(2);
                 content = cursor.getString(3);
-                adapter.addItem(new ReviewItem(review_number, title, content, name));
+                adapter.addItem(new ReviewItem(review_number, name, title, content));
             }
             cursor.close();
         }
